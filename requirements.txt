@@ -1,6 +1,6 @@
 ConfigSpace==0.7.1
 matplotlib==3.8.4
-numpy==2.3.1
+numpy==1.26.4
 openai==1.97.0
 psycopg2==2.9.9
 scipy==1.16.0
