@@ -41,7 +41,7 @@ class GPT:
                     else OpenAI(api_key=self.api_key))
         
         # reasoning model
-        if self.model in ["o1-preview", "o1-mini", "o3-mini", "o4-mini"]:
+        if not self.api_base and self.model in ["o1-preview", "o1-mini", "o3-mini", "o4-mini"]:
             try:
                 response = client.chat.completions.create(
                     model = self.model,

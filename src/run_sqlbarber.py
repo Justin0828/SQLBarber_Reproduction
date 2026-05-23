@@ -4,6 +4,7 @@ import sys, os, json
 from pathlib import Path
 from sqlbarber.prompts import SQL_GENERATION_TEMPLATE # this prompt template would only be used by NaiveSQLTemplateGenerator as a simple baseline, we use AdvancedSQLTemplateGenerator in SQLBarber
 from sqlbarber.runner import SQLBarberRunner
+from sqlbarber.env import get_llm_config, load_dotenv
 from pathlib import Path
 
 # user provides sql requirement and optimization constraint
@@ -39,14 +40,16 @@ else:
     print(f"DB column information loaded successfully from {column_info_folder}")
 
 # user specify which LLM to invoke
-try:
-    api_key = os.environ['OPENAI_API_KEY']
-    print("API key loaded successfully")
-except KeyError:
-    print("OPENAI_API_KEY not found in environment variables")
-    api_key = None
-model = "o3-mini"
-gpt = GPT(api_key=api_key, model=model)
+load_dotenv()
+api_key, api_base, model = get_llm_config()
+if api_key:
+    print("LLM API key loaded successfully")
+else:
+    print("LLM API key not found. Set LLM_API_KEY, OPENAI_API_KEY, or DEEPSEEK_API_KEY.")
+print(f"Using LLM model: {model}")
+if api_base:
+    print(f"Using LLM base URL: {api_base}")
+gpt = GPT(api_key=api_key, api_base=api_base, model=model)
 
 # user provides semantic requirements
 semantic_requirements = []
